@@ -178,7 +178,7 @@ function showDropdownList() {
   setTimeout(function () {
     // console.log('new modal!!!');
     updateEditModal();
-  }, 500);
+  }, 1000);
 }
 
 // $('button[type=submit]').click(function () {
