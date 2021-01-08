@@ -6,7 +6,7 @@ $(document).ready(function () {
 function ha() {
   setTimeout(() => {
     $(".input-group").each(function () {
-      console.log(this);
+      // console.log(this);
     });
   }, 100);
 }
@@ -67,6 +67,20 @@ function setGrade(mod, grade, su) {
   }
 }
 
+/**
+ * 
+ * @param {string} mod mod code
+ * @returns {boolean} can SU?
+ */
+function canSU(mod) {
+  const moduleBank = JSON.parse(localStorage.getItem('persist:moduleBank'));
+  const modules = JSON.parse(moduleBank['modules']);
+  if (!modules[mod]['attributes']) {
+    return false;
+  }
+  return modules[mod]['attributes']['su'];
+}
+
 function updateEditModal() {
   const mod = $(".ReactModalPortal > div > div > form > h3:contains('Edit info for ')").first().text().substr('Edit info for '.length);
   const grade = getGrade(mod);
@@ -102,13 +116,39 @@ function updateEditModal() {
 
   $(".ReactModalPortal > div > div > form > div > div > button:contains('Save')").click(function () {
     const this_grade = $('#input-grade').find(":selected").text()
-    console.log(this_grade);
-    setGrade(mod, this_grade, false);
+    // console.log(this_grade);
+    // console.log("su?", $("#su-selector-input").is(":checked"));
+    setGrade(mod, this_grade, $("#su-selector-input").is(":checked"));
   });
   $(".ReactModalPortal > div > div > form > div > button:contains('Reset Info')").click(function () {
     $("#input-grade :selected").removeAttr("selected");
     $("#input-grade").val(grade['grade']).change();
   });
+
+  addSUSelector(mod, grade['grade']);
+
+  $('#input-grade').on('change', function () {
+    // console.log(this.value);
+    addSUSelector(mod, this.value);
+  });
+}
+
+function addSUSelector(mod, grade) {
+  if (!['CS', 'CU'].includes(grade) && canSU(mod)) {
+    const su_selector = $("<div></div>").attr({
+      class: "col-md-2",
+      id: "su-selector-div"
+    });
+    su_selector.html(
+      '<label for="input-su" style="width: 100%; text-align: center;">SU?</label>' +
+      `<input id="su-selector-input" type="checkbox" class="form-control" value="1"${getGrade(mod)['su'] ?" checked" : ""}>`
+    );
+    $(".ReactModalPortal > div > div > form > .form-row > .col-md-6").attr("class", "col-md-4");
+    $(".ReactModalPortal > div > div > form > .form-row").append(su_selector);
+  } else {
+    $("#su-selector-div").remove();
+    $(".ReactModalPortal > div > div > form > .form-row > .col-md-4").attr("class", "col-md-6");
+  }
 }
 
 function checkEditModal() {
@@ -116,7 +156,7 @@ function checkEditModal() {
   setTimeout(function () {
     const has_modal = $(".ReactModalPortal > div > div > form > h3:contains('Edit info for ')").length;
     if (has_modal && !last) {
-      console.log('new modal!');
+      // console.log('new modal!');
       updateEditModal();
     }
     last = has_modal;
