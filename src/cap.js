@@ -34,7 +34,7 @@ function calculate_cap(courses) {
     } else {
         cap = total_grade_sum / total_mc;
     }
-    return cap;
+    return cap.toFixed(2);
 }
 
 
