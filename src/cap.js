@@ -1,7 +1,7 @@
 
 $(document).ready(function () {
     add_button();
-    cal_cap();
+    display_cap();
 });
 
 function cal_cap() {
@@ -16,7 +16,7 @@ function cal_cap() {
     // console.log(mods_taken_info_cap);
 
     var cap = calculate_cap(mods_taken_info_cap);
-    console.log(cap);
+    return cap;
 
 }
 
@@ -64,10 +64,18 @@ function get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade
 
 
 function add_button() {
+    
     var $calculate = $('<button class="btn btn-svg btn-outline-primary" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Calculate</button>');
-    $calculate.appendTo($(".main-content > div > header"));
+    $calculate.appendTo($(".main-content > div > header > div"));
+    $calculate.click(cal_cap);
+
 }
 
+function display_cap() {
+    let capstring = cal_cap();
+    var $cap_box = $(`<p class="VcguI5co"> CAP:  ${capstring} </p>`);
+    $cap_box.prependTo($(".main-content > div > header > div"));
+}
 
 
 // calculate the cap of the semester
