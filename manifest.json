@@ -22,6 +22,7 @@
       ],
       "js": [
         "lib/jquery.min.js",
+        "src/check_exist.js",
         "src/main.js",
         "src/grade.js",
         "src/cap.js"
