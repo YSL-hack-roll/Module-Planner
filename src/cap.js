@@ -15,17 +15,21 @@ $("*").click(function() {
 function cal_cap() {
     var mods_taken_raw = JSON.parse(localStorage.getItem('persist:planner'));
     var all_mods_info_raw = JSON.parse(localStorage.getItem('persist:moduleBank'));
-    var mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
-    
-    var modcodes_array = get_modcodes_array(mods_taken_raw);
-    console.log(modcodes_array);
-    
-    var mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
-    console.log(mods_taken_info_cap);
+     
+    try {
+        var mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
+        var modcodes_array = get_modcodes_array(mods_taken_raw);
+        // console.log(modcodes_array);
+        
+        var mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
+        // console.log(mods_taken_info_cap);
 
-    var cap = calculate_cap(mods_taken_info_cap);
-    return cap;
-
+        var cap = calculate_cap(mods_taken_info_cap);
+        return cap;
+    } catch(err) {
+        console.log('no grades have been entered yet');
+        return "0.00";
+    }
 }
 
 
