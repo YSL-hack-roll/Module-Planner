@@ -1,20 +1,24 @@
 $(document).ready(function () {
   add_editModules_listener();
-  //checkEditModal();
+  add_ModuleCards_listener();
 });
 
-$("*").click(function () {
-  setTimeout(function () {
-    add_editModules_listener();
-  })
-});
-// function add_editModules_listener() {
-//   $("button:contains('Edit MC and Title'):not([ysl])").click(showDropdownList);
-// }
 function add_editModules_listener() {
-  console.log("caught");
-  $("button:contains('Edit MC and Title'):not([ysl])").attr('ysl', 'ysl').click(showDropdownList);
+  $("body").click(function () {
+    $("button:contains('Edit MC and Title'):not([ysl])").attr('ysl', 'ysl').click(showDropdownList);
+  });
 }
+
+function add_ModuleCards_listener() {
+  $("body").click(function () {
+    $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU);
+  });
+}
+
+function toggleSU() {
+  console.log($(this).find("strong").text());
+}
+
 /**
  * 
  * @param {string} mod mod code
@@ -137,7 +141,7 @@ var total_SU = 32;
 
 function SULeft() {
   const ysl_data = JSON.parse(localStorage.getItem('YSL:data'));
-  if (! ysl_data) {
+  if (!ysl_data) {
     localStorage.setItem('YSL:SUleft', total_SU);
     return total_SU;
   }
@@ -180,22 +184,6 @@ function addSUSelector(mod, grade) {
     $(".ReactModalPortal > div > div > form > .form-row > .col-md-4").attr("class", "col-md-6");
   }
 }
-
-/*
-function checkEditModal() {
-  let last = $(".ReactModalPortal > div > div > form > h3:contains('Edit info for ')").length;
-  setTimeout(function () {
-    const has_modal = $(".ReactModalPortal > div > div > form > h3:contains('Edit info for ')").length;
-    if (has_modal && !last) {
-      // console.log('new modal!');
-      updateEditModal();
-    }
-    last = has_modal;
-    checkEditModal();
-  }, 200);
-}
-*/
-
 
 function showDropdownList() {
   setTimeout(function () {
