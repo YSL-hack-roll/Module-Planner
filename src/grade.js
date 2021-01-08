@@ -19,6 +19,12 @@ function toggleSU() {
   console.log($(this).find("strong").text());
 }
 
+
+function changeColor(that) {
+  $(that).css("backgroundColor", 'red');
+}
+
+
 /**
  * 
  * @param {string} mod mod code
