@@ -36,7 +36,9 @@ function toggleSU() {
     updateSU(mod_code);
     $(this).each(changeColor);
   } else {
-    alert(mod_code + " has no S/U option!");
+    if (canSU(mod_code) === false) {
+      alert(mod_code + " has no S/U option!");
+    }
   }
 }
 
@@ -126,11 +128,14 @@ function setGrade(mod, grade, su) {
 /**
  * 
  * @param {string} mod mod code
- * @returns {boolean} can SU?
+ * @returns {boolean | null} can SU?
  */
 function canSU(mod) {
   const moduleBank = JSON.parse(localStorage.getItem('persist:moduleBank'));
   const modules = JSON.parse(moduleBank['modules']);
+  if (!modules[mod]) {
+    return;
+  }
   if (!modules[mod]['attributes']) {
     return false;
   }
