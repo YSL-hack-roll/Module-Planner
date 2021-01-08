@@ -1,6 +1,7 @@
 $(document).ready(function () {
   add_editModules_listener();
   add_ModuleCards_listener();
+  add_Click_listener();
 });
 
 function add_editModules_listener() {
@@ -9,9 +10,17 @@ function add_editModules_listener() {
   });
 }
 
+
 function add_ModuleCards_listener() {
   $("body").click(function () {
-    $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU);
+    $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU).each(changeColor);
+  });
+}
+
+
+function add_Click_listener() {
+  $("body").click(function () {
+    $("h3:contains('Semester ')").siblings("div").children("div[draggable]").each(changeColor);
   });
 }
 
@@ -20,8 +29,8 @@ function toggleSU() {
 }
 
 
-function changeColor(that) {
-  $(that).css("backgroundColor", 'red');
+function changeColor() {
+  getGrade($(this).find("strong").text())['su'] ? $(this).css("backgroundColor", 'red') : $(this).css("backgroundColor", "2BB34A");
 }
 
 
@@ -75,6 +84,10 @@ function setGrade(mod, grade, su) {
     };
     localStorage.setItem('YSL:data', JSON.stringify(ysl_data));
   }
+
+  console.log(mod);
+
+  // $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').find(":contains:" + mod).each(changeColor, console.log("debug" + $(this).find("strong").text()));
 }
 
 /**
