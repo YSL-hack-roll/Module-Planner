@@ -1,6 +1,7 @@
 $(document).ready(function () {
   add_addModules_listener();
-  checkEditModal();
+  add_editModules_listener();
+  //checkEditModal();
 });
 
 function ha() {
@@ -13,6 +14,9 @@ function ha() {
 
 function add_addModules_listener() {
   $("button:contains('Add Modules'):not([ysl])").attr("ysl", "ysl").click(ha);
+}
+function add_editModules_listener() {
+  $("button:contains('Edit MC and Title'):not([ysl])").attr("ysl", "ysl").click(showDropdownList);
 }
 
 /**
@@ -86,6 +90,8 @@ function updateEditModal() {
     'D+',
     'D',
     'F',
+    'S',
+    'U',
     'CS',
     'CU',
   ]) {
@@ -111,6 +117,7 @@ function updateEditModal() {
   });
 }
 
+/*
 function checkEditModal() {
   let last = $(".ReactModalPortal > div > div > form > h3:contains('Edit info for ')").length;
   setTimeout(function () {
@@ -122,6 +129,15 @@ function checkEditModal() {
     last = has_modal;
     checkEditModal();
   }, 200);
+}
+*/
+
+
+function showDropdownList() {
+  setTimeout(function () {
+    console.log('new modal!!!');
+    updateEditModal();
+  }, 500);
 }
 
 // $('button[type=submit]').click(function () {
