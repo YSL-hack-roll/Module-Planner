@@ -9,7 +9,9 @@
       ],
       "js": [
         "lib/jquery.min.js",
-        "main.js"
+        "src/main.js",
+        "src/grade.js",
+        "src/cap.js"
       ]
     }
   ]
