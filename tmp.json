@@ -8,3 +8,29 @@
     "su": true
   }
 }
+
+
+var text = `{
+  "CS1010": {
+    "grade": "A+",
+    "su": true,
+    "mc": 9
+  },
+  "CS2020": {
+    "grade": "A+",
+    "su": true,
+    "mc": 9
+  },
+  "CS1030": {
+    "grade": "A+",
+    "su": true,
+    "mc": 9
+  },
+  "CS2040": {
+    "grade": "A+",
+    "su": true,
+    "mc": 9
+  }
+}`
+
+var a = JSON.parse(text);
