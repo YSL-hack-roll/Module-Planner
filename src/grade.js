@@ -9,9 +9,20 @@ function add_editModules_listener() {
   });
 }
 
+function updateCardGrade() {
+  const MC_div = $(this).find("div > div > div:contains('MCs')").first();
+  const grade = getGrade($(this).find("strong").text())['grade'];
+  if ($(MC_div).siblings("div.grade-div").length) {
+    $(MC_div).siblings("div.grade-div").text(`${grade ? '(' + grade + ')' : ''}`);
+  } else {
+    $(MC_div).after($(`<div class="grade-div">${grade ? '(' + grade + ')' : ''}</div>`));
+  }
+}
+
 function add_ModuleCards_listener() {
   $("body").click(function () {
-    $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU);
+    $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU)
+      .each(updateCardGrade);
   });
 }
 
@@ -69,6 +80,11 @@ function setGrade(mod, grade, su) {
     };
     localStorage.setItem('YSL:data', JSON.stringify(ysl_data));
   }
+  $("h3:contains('Semester ')").siblings("div").children("div[draggable]")
+    .filter(function () {
+      return $(this).find("strong").text() === mod;
+    })
+    .each(updateCardGrade);
 }
 
 /**
@@ -119,9 +135,7 @@ function updateEditModal() {
   $(".ReactModalPortal > div > div > form > .form-row").append(grade_selector);
 
   $(".ReactModalPortal > div > div > form > div > div > button:contains('Save')").click(function () {
-    const this_grade = $('#input-grade').find(":selected").text()
-    // console.log(this_grade);
-    // console.log("su?", $("#su-selector-input").is(":checked"));
+    const this_grade = $('#input-grade').find(":selected").text();
     setGrade(mod, this_grade, $("#su-selector-input").is(":checked"));
   });
   $(".ReactModalPortal > div > div > form > div > button:contains('Reset Info')").click(function () {
@@ -132,7 +146,6 @@ function updateEditModal() {
   addSUSelector(mod, grade['grade']);
 
   $('#input-grade').on('change', function () {
-    // console.log(this.value);
     addSUSelector(mod, this.value);
   });
 }
@@ -148,7 +161,6 @@ function SULeft() {
   const modules = JSON.parse(JSON.parse(localStorage.getItem('persist:moduleBank'))['modules']);
   const su_left = total_SU - Object.keys(ysl_data).reduce((acc, cur) => acc + ysl_data[cur]['su'] ? modules[cur]['moduleCredit'] : 0, 0);
   localStorage.setItem('YSL:SUleft', su_left);
-  console.log('......' + su_left);
   return su_left;
 }
 
@@ -163,7 +175,6 @@ function getMC(mod) {
 }
 
 function addSUSelector(mod, grade) {
-  console.log('????????')
   const su_left = SULeft();
   if (!['CS', 'CU'].includes(grade) && canSU(mod)) {
     if ($("#su-selector-div").length) {
@@ -187,11 +198,6 @@ function addSUSelector(mod, grade) {
 
 function showDropdownList() {
   setTimeout(function () {
-    // console.log('new modal!!!');
     updateEditModal();
   }, 0);
 }
-
-// $('button[type=submit]').click(function () {
-
-// });
