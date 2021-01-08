@@ -90,8 +90,6 @@ function updateEditModal() {
     'D+',
     'D',
     'F',
-    'S',
-    'U',
     'CS',
     'CU',
   ]) {
