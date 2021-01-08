@@ -26,7 +26,7 @@ $("*").click(function() {
 });
 
 
-var su_alert_flag = true;
+// var su_alert_flag = true;
 
 
 function cal_cap() {
@@ -109,6 +109,7 @@ function get_modcodes_array(mods_taken_raw) {
     }
     return res;
 }
+
 
 function get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade) {
     let res = {};
@@ -231,10 +232,10 @@ function cal_su() {
         let su = calculate_remaining_su(mods_taken_info_cap);
         return su;
     } catch(err) {
-        if (su_alert_flag === true) {
-            su_alert_flag = false;
-            alert(err);
-        }
+        // if (su_alert_flag === true) {
+        //     su_alert_flag = false;
+        //     alert(err);
+        // }
         
         return "0.00";
     }
@@ -271,12 +272,18 @@ function calculate_remaining_su(courses) {
         }
     }
 
-    if (su < 0) {
+    if (su <= 0) {
+        setSu(true);
         throw new Error("You have overused your SUs");
     } else {
-        su_alert_flag = true;
+        setSu(false);
     }
 
     return su;
+}
+
+
+function setSu(cannotSU) {
+    localStorage.setItem('YSL:cannotSU', cannotSU);
 }
 
