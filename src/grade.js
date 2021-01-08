@@ -30,7 +30,7 @@ function add_ModuleCards_listener() {
     $(this).siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU)
       .each(updateCardGrade)
       .each(changeColor);
-  })
+  });
 }
 
 function add_Click_listener() {

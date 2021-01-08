@@ -4,5 +4,5 @@ function checkExist(selector, callback) {
       clearInterval(checkExistTimer);
       $(selector).each(callback);
     }
-  }, 100);
+  }, 20);
 }
