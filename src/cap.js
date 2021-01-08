@@ -221,23 +221,28 @@ function cal_su() {
     let mods_taken_raw = JSON.parse(localStorage.getItem('persist:planner'));
     let all_mods_info_raw = JSON.parse(localStorage.getItem('persist:moduleBank'));
      
+
+    if (localStorage.getItem('YSL:data') === null) {
+        return "32";
+    }
+
+    
     try {
         let mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
         let modcodes_array = get_modcodes_array(mods_taken_raw);
-        console.log(modcodes_array);
-        
+        console.log(modcodes_array); 
         let mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
         console.log(mods_taken_info_cap);
-
         let su = calculate_remaining_su(mods_taken_info_cap);
         return su;
+
     } catch(err) {
         // if (su_alert_flag === true) {
         //     su_alert_flag = false;
         //     alert(err);
         // }
-        
-        return "0.00";
+        console.log(err);
+        return "32";
     }
 }
 
@@ -246,12 +251,13 @@ function cal_su() {
 function display_su() {
     let sustring = "";
     try {
+        
         sustring = cal_su();
+        console.log("debug: " + sustring);
     } catch(err) {
-        sustring = err;
-        alert(err);
+        
     }
-    var su_box = $(`<div class="su_value H46mXU_C _1coqwKmZ" id="su-float" style="position:fixed;bottom:5px;right:5px;padding:5px 10px;">Remaining SUs:  0</div>`);
+    var su_box = $(`<div class="su_value H46mXU_C _1coqwKmZ" id="su-float" style="position:fixed;bottom:5px;right:5px;padding:5px 10px;">Remaining SUs: ${sustring}</div>`);
     su_box.appendTo($(".main-container"));
 }
 
