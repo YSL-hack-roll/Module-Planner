@@ -18,8 +18,15 @@ jobs:
         shell: bash
         env:
           PEM: ${{secrets.PEM}}
+      - name: Set up chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get --only-upgrade install google-chrome-stable
+          google-chrome --version
       - name: Package extension
-        run: 'chrome --pack-extension=./ --pack-extension-key=ext.pem'
+        run: |
+          google-chrome --no-message-box --pack-extension=./ --pack-extension-key=ext.pem
+          ls
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
