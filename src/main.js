@@ -1,3 +1,5 @@
 $(document).ready(function () {
-  $(".main-content .page-container header h1").html("YSL Module Planner");
+  checkExist(".main-content .page-container header h1", function() {
+    $(this).text("YSL Module Planner");
+  });
 });

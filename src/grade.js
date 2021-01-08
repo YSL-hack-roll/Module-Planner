@@ -2,6 +2,9 @@ $(document).ready(function () {
   add_editModules_listener();
   add_ModuleCards_listener();
   // add_Remove_listener();
+
+  add_Click_listener();
+
 });
 
 function add_editModules_listener() {
@@ -10,9 +13,32 @@ function add_editModules_listener() {
   });
 }
 
+function updateCardGrade() {
+  const MC_div = $(this).find("div > div > div:contains('MCs')").first();
+  const grade = getGrade($(this).find("strong").text())['grade'];
+  if ($(MC_div).siblings("div.grade-div").length) {
+    $(MC_div).siblings("div.grade-div").text(`${grade ? '(' + grade + ')' : ''}`);
+  } else {
+    $(MC_div).after($(`<div class="grade-div">${grade ? '(' + grade + ')' : ''}</div>`));
+  }
+}
+
 function add_ModuleCards_listener() {
+  // $("body").click(function () {
+  //   $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU)
+  //     .each(updateCardGrade)
+  //     .each(changeColor);
+  // });
+  checkExist("h3:contains('Semester ')", function () {
+    $(this).siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU)
+      .each(updateCardGrade)
+      .each(changeColor);
+  });
+}
+
+function add_Click_listener() {
   $("body").click(function () {
-    $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU);
+    $("h3:contains('Semester ')").siblings("div").children("div[draggable]").each(changeColor);
   });
 }
 
@@ -32,14 +58,14 @@ function checkSU_when_remove() {
 function toggleSU() {
   console.log($(this).find("strong").text());
   const mod_code = $(this).find("strong").text();
-  if (canSU(mod_code)){
+  if (canSU(mod_code)) {
     // change colour
     updateSU(mod_code);
   }
 }
 
 
-function updateSU(mod_code){
+function updateSU(mod_code) {
   const mod_grade = getGrade(mod_code);
   // if alr sued, make it not su, update su_left
   // else if not sued and have enough su, su it and update su_left
@@ -47,19 +73,19 @@ function updateSU(mod_code){
   if (mod_grade['su']) {
     setGrade(mod_code, mod_grade['grade'], false);
     SULeft();
-    console.log(mod_code+ " was un-SUed");
+    console.log(mod_code + " was un-SUed");
   } else if (SULeft() >= getMC(mod_code)) {
     setGrade(mod_code, mod_grade['grade'], true);
     SULeft();
-    console.log(mod_code+ " was SUed");
+    console.log(mod_code + " was SUed");
   } else {
-    console.log(mod_code+" not enough su");
+    console.log(mod_code + " not enough su");
   }
 }
 
 
-function changeColor(that) {
-  $(that).css("backgroundColor", 'red');
+function changeColor() {
+  getGrade($(this).find("strong").text())['su'] ? $(this).css("backgroundColor", 'red') : $(this).css("backgroundColor", "2BB34A");
 }
 
 
@@ -113,6 +139,12 @@ function setGrade(mod, grade, su) {
     };
     localStorage.setItem('YSL:data', JSON.stringify(ysl_data));
   }
+  $("h3:contains('Semester ')").siblings("div").children("div[draggable]")
+    .filter(function () {
+      return $(this).find("strong").text() === mod;
+    })
+    .each(updateCardGrade);
+  // $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').find(":contains:" + mod).each(changeColor, console.log("debug" + $(this).find("strong").text()));
 }
 
 /**
@@ -163,9 +195,7 @@ function updateEditModal() {
   $(".ReactModalPortal > div > div > form > .form-row").append(grade_selector);
 
   $(".ReactModalPortal > div > div > form > div > div > button:contains('Save')").click(function () {
-    const this_grade = $('#input-grade').find(":selected").text()
-    // console.log(this_grade);
-    // console.log("su?", $("#su-selector-input").is(":checked"));
+    const this_grade = $('#input-grade').find(":selected").text();
     setGrade(mod, this_grade, $("#su-selector-input").is(":checked"));
   });
   $(".ReactModalPortal > div > div > form > div > button:contains('Reset Info')").click(function () {
@@ -176,7 +206,6 @@ function updateEditModal() {
   addSUSelector(mod, grade['grade']);
 
   $('#input-grade').on('change', function () {
-    // console.log(this.value);
     addSUSelector(mod, this.value);
   });
 }
@@ -201,8 +230,6 @@ function SULeft() {
     }
   }
   localStorage.setItem('YSL:SUleft', su_left);
-  console.log('......' + su_left);
-  // count++;
   return su_left;
 }
 
@@ -217,7 +244,6 @@ function getMC(mod) {
 }
 
 function addSUSelector(mod, grade) {
-  console.log('????????')
   const su_left = SULeft();
   if (!['CS', 'CU'].includes(grade) && canSU(mod)) {
     if ($("#su-selector-div").length) {
@@ -245,12 +271,7 @@ function showDropdownList() {
   //   updateEditModal();
   // }, 0);
   setTimeout(function () {
-    // console.log('new modal!!!');
     updateEditModal();
   }, 0);
   
 }
-
-// $('button[type=submit]').click(function () {
-
-// });
