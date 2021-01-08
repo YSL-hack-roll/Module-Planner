@@ -34,7 +34,7 @@ function cal_cap() {
     let mods_taken_raw = JSON.parse(localStorage.getItem('persist:planner'));
     let all_mods_info_raw = JSON.parse(localStorage.getItem('persist:moduleBank'));
     let modcodes_array = get_modcodes_array(mods_taken_raw);
-    console.log(modcodes_array);
+    // console.log(modcodes_array);
 
     // setTimeout(function () {
     //     update_YSL_data(modcodes_array);
@@ -49,7 +49,7 @@ function cal_cap() {
         let mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
         let mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
 
-        console.log(mods_taken_info_cap);
+        // console.log(mods_taken_info_cap);
 
         let cap = calculate_cap(mods_taken_info_cap);
         return cap;
@@ -215,81 +215,88 @@ function calculate_cap(courses) {
 
 
 // the followings functions involve the SUs
-
-
-function cal_su() {
-    let mods_taken_raw = JSON.parse(localStorage.getItem('persist:planner'));
-    let all_mods_info_raw = JSON.parse(localStorage.getItem('persist:moduleBank'));
-     
-
-    if (localStorage.getItem('YSL:data') === null) {
+function get_su(){
+    if (localStorage.getItem('YSL:SUleft') === null) {
         return "32";
     }
-
-    
-    try {
-        let mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
-        let modcodes_array = get_modcodes_array(mods_taken_raw);
-        console.log(modcodes_array); 
-        let mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
-        console.log(mods_taken_info_cap);
-        let su = calculate_remaining_su(mods_taken_info_cap);
-        return su;
-
-    } catch(err) {
-        // if (su_alert_flag === true) {
-        //     su_alert_flag = false;
-        //     alert(err);
-        // }
-        console.log(err);
-        return "32";
-    }
+    return ""+localStorage.getItem('YSL:SUleft');
 }
 
-
-
 function display_su() {
-    let sustring = "";
-    try {
+    // let sustring = "";
+    // try { 
+    //     sustring = cal_su();
+    //     console.log("debug: " + sustring);
+    // } catch(err) {
         
-        sustring = cal_su();
-        console.log("debug: " + sustring);
-    } catch(err) {
-        
-    }
+    // }
+    let sustring = get_su();
+
     var su_box = $(`<div class="su_value H46mXU_C _1coqwKmZ" id="su-float" style="position:fixed;bottom:5px;right:5px;padding:5px 10px;">Remaining SUs: ${sustring}</div>`);
     su_box.appendTo($(".main-container"));
 }
 
 
 function refresh_su() {
-    let sustring = cal_su();
+    // let sustring = cal_su();
+    let sustring = get_su();
     console.log("refresh SU, new SU:" + sustring);
     $("#su-float").text(`Remaining SUs:  ${sustring}`);
 }
 
-// calculate the remaining sus
-function calculate_remaining_su(courses) {
-    var su = 8; // sus are 32 by default
 
-    for (const course in courses) {
-        if (courses[course]['su'] === true) {
-            su -= courses[course]['mc'];
-        }
-    }
+// function cal_su() {
+//     let mods_taken_raw = JSON.parse(localStorage.getItem('persist:planner'));
+//     let all_mods_info_raw = JSON.parse(localStorage.getItem('persist:moduleBank'));
+     
 
-    if (su <= 0) {
-        setSu(true);
-        throw new Error("You have overused your SUs");
-    } else {
-        setSu(false);
-    }
+//     if (localStorage.getItem('YSL:data') === null) {
+//         return "32";
+//     }
 
-    return su;
-}
+    
+//     try {
+//         let mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
+//         let modcodes_array = get_modcodes_array(mods_taken_raw);
+//         // console.log(modcodes_array); 
+//         let mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
+//         // console.log(mods_taken_info_cap);
+//         let su = calculate_remaining_su(mods_taken_info_cap);
+//         return su;
+
+//     } catch(err) {
+//         // if (su_alert_flag === true) {
+//         //     su_alert_flag = false;
+//         //     alert(err);
+//         // }
+//         console.log(err);
+//         return "32";
+//     }
+// }
 
 
-function setSu(cannotSU) {
-    localStorage.setItem('YSL:cannotSU', cannotSU);
-}
 
+// // calculate the remaining sus
+// function calculate_remaining_su(courses) {
+//     var su = 32; // sus are 32 by default
+
+//     for (const course in courses) {
+//         if (courses[course]['su'] === true) {
+//             su -= courses[course]['mc'];
+//         }
+//     }
+
+//     if (su <= 0) {
+//         setSu(true);
+//         throw new Error("You have overused your SUs");
+//     } else {
+//         setSu(false);
+//     }
+
+//     return su;
+// }
+
+
+// function setSu(cannotSU) {
+//     localStorage.setItem('YSL:cannotSU', cannotSU);
+// }
