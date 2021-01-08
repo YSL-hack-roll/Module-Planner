@@ -159,6 +159,7 @@ function add_button() {
 
 function display_cap() {
     let capstring = cal_cap();
+    // console.log(capstring);
     var $cap_box = $(`<p class="cap_value" style="margin-right:8px" > CAP:  ${capstring} </p>`);
     $cap_box.prependTo($(".main-content > div > header > div"));
 }
@@ -208,7 +209,7 @@ function calculate_cap(courses) {
         cap = total_grade_sum / total_mc;
     }
 
-    // console.log("cap:" + cap);
+    // console.log("cap:" + cap + " " + total_grade_sum + " " +total_mc);
     return cap.toFixed(2);
 }
 
