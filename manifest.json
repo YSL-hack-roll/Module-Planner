@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "YSL Module Planner",
+  "name": "CAP/SU",
   "version": "0.1",
   "description": "Extend the functionality of NUSMods Module Planner",
   "browser_action": {
