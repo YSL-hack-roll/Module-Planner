@@ -1,20 +1,19 @@
 $(document).ready(function () {
-  add_addModules_listener();
   add_editModules_listener();
   //checkEditModal();
 });
 
-$("*").click(function() {
+$("*").click(function () {
   setTimeout(function () {
     add_editModules_listener();
-  }, )
+  })
 });
 // function add_editModules_listener() {
 //   $("button:contains('Edit MC and Title'):not([ysl])").click(showDropdownList);
 // }
 function add_editModules_listener() {
   console.log("caught");
-  $("button:contains('Edit MC and Title'):not([ysl])").attr('ysl','ysl').click(showDropdownList);
+  $("button:contains('Edit MC and Title'):not([ysl])").attr('ysl', 'ysl').click(showDropdownList);
 }
 /**
  * 
@@ -134,7 +133,34 @@ function updateEditModal() {
   });
 }
 
+var total_SU = 32;
+
+function SULeft() {
+  const ysl_data = JSON.parse(localStorage.getItem('YSL:data'));
+  if (! ysl_data) {
+    localStorage.setItem('YSL:SUleft', total_SU);
+    return total_SU;
+  }
+  const modules = JSON.parse(JSON.parse(localStorage.getItem('persist:moduleBank'))['modules']);
+  const su_left = total_SU - Object.keys(ysl_data).reduce((acc, cur) => acc + ysl_data[cur]['su'] ? modules[cur]['moduleCredit'] : 0, 0);
+  localStorage.setItem('YSL:SUleft', su_left);
+  console.log('......' + su_left);
+  return su_left;
+}
+
+/**
+ * 
+ * @param {string} mod mod code
+ * @returns {number} number of MCs of the mod
+ */
+function getMC(mod) {
+  const modules = JSON.parse(JSON.parse(localStorage.getItem('persist:moduleBank'))['modules']);
+  return modules[mod]['moduleCredit'];
+}
+
 function addSUSelector(mod, grade) {
+  console.log('????????')
+  const su_left = SULeft();
   if (!['CS', 'CU'].includes(grade) && canSU(mod)) {
     if ($("#su-selector-div").length) {
       return;
@@ -145,7 +171,7 @@ function addSUSelector(mod, grade) {
     });
     su_selector.html(
       '<label for="input-su" style="width: 100%; text-align: center;">SU?</label>' +
-      `<input id="su-selector-input" type="checkbox" class="form-control" value="1"${getGrade(mod)['su'] ?" checked" : ""}${localStorage.getItem('YSL:cannotSU') && !getGrade(mod)['su'] ? ' disabled' : '' }>`
+      `<input id="su-selector-input" type="checkbox" class="form-control" value="1"${getGrade(mod)['su'] ? " checked" : ""}${(su_left < getMC(mod)) && !getGrade(mod)['su'] ? ' disabled' : ''}>`
     );
     $(".ReactModalPortal > div > div > form > .form-row > .col-md-6").attr("class", "col-md-4");
     $(".ReactModalPortal > div > div > form > .form-row").append(su_selector);
