@@ -199,7 +199,7 @@ function SULeft() {
     return total_SU;
   }
   const modules = JSON.parse(JSON.parse(localStorage.getItem('persist:moduleBank'))['modules']);
-  const su_left = total_SU - Object.keys(ysl_data).reduce((acc, cur) => acc + ysl_data[cur]['su'] ? modules[cur]['moduleCredit'] : 0, 0);
+  const su_left = total_SU - Object.keys(ysl_data).reduce((acc, cur) => acc + (ysl_data[cur]['su'] ? parseInt(modules[cur]['moduleCredit']) : 0), 0);
   localStorage.setItem('YSL:SUleft', su_left);
   return su_left;
 }
