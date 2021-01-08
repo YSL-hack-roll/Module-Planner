@@ -32,7 +32,6 @@ $("*").click(function() {
 function cal_cap() {
 
     let mods_taken_raw = JSON.parse(localStorage.getItem('persist:planner'));
-    let all_mods_info_raw = JSON.parse(localStorage.getItem('persist:moduleBank'));
     let modcodes_array = get_modcodes_array(mods_taken_raw);
     // console.log(modcodes_array);
 
@@ -47,10 +46,10 @@ function cal_cap() {
 
     try {
         let mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
+        let all_mods_info_raw = JSON.parse(localStorage.getItem('persist:moduleBank'));
         let mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
 
         // console.log(mods_taken_info_cap);
-
         let cap = calculate_cap(mods_taken_info_cap);
         return cap;
     } catch(err) {
@@ -93,10 +92,32 @@ function update_YSL_data(modcodes_array) {
         console.log("Error in updating YSL data! have modules:" + modcodes_array + "but data not present in YSL data");
     } else {
         localStorage.setItem('YSL:data', JSON.stringify(new_mods_taken_grade));
+        SULeft();
     }
 }
 
-
+// same function as the one in grade.js
+function SULeft() {
+    const ysl_data = JSON.parse(localStorage.getItem('YSL:data'));
+    if (!ysl_data) {
+      localStorage.setItem('YSL:SUleft', total_SU);
+      return total_SU;
+    }
+    const modules = JSON.parse(JSON.parse(localStorage.getItem('persist:moduleBank'))['modules']);
+    // console.log("su_left: "+count);
+    // console.log(ysl_data);
+    // const su_left = total_SU - Object.keys(ysl_data).reduce((acc, cur) => acc + ysl_data[cur]['su'] ? modules[cur]['moduleCredit'] : 0, 0);
+    let su_left = total_SU;
+    for(let mod_code in ysl_data) {
+      if (ysl_data[mod_code]['su']) {
+         su_left -= modules[mod_code]['moduleCredit'];
+      }
+    }
+    localStorage.setItem('YSL:SUleft', su_left);
+    // console.log('......' + su_left);
+    // count++;
+    return su_left;
+  }
 
 function get_modcodes_array(mods_taken_raw) {
     let res = [];
@@ -117,12 +138,19 @@ function get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade
     for (let i = 0; i < modcodes_array.length; i++) {
         let mod_code = modcodes_array[i];
         let mc, grade, su;
-        if (all_mods_info.hasOwnProperty(mod_code)) {
+        // if (all_mods_info.hasOwnProperty(mod_code)) {
+        //     mc = parseInt(all_mods_info[mod_code]['moduleCredit']);
+        // } else {
+        //     console.log('Error: CAP calculator, no MC info for' + mod_code);
+        //     mc = 0;
+        // }
+        if (all_mods_info[mod_code]) {
             mc = parseInt(all_mods_info[mod_code]['moduleCredit']);
         } else {
             console.log('Error: CAP calculator, no MC info for' + mod_code);
             mc = 0;
         }
+
         if (mods_taken_grade.hasOwnProperty(mod_code)) {
             grade = mods_taken_grade[mod_code]['grade'];
             if (grade === "") {
@@ -217,9 +245,9 @@ function calculate_cap(courses) {
 
 // the followings functions involve the SUs
 function get_su(){
-    if (localStorage.getItem('YSL:SUleft') === null) {
+    if (localStorage.getItem('YSL:SUleft') === null ) {
         return "32";
-    }
+    } 
     return ""+localStorage.getItem('YSL:SUleft');
 }
 
