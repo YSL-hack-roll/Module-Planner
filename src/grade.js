@@ -1,11 +1,12 @@
 $(document).ready(function () {
-  add_editModules_listener();
+  add_dynamic_elements_listeners();
   add_ModuleCards_listener();
 });
 
-function add_editModules_listener() {
+function add_dynamic_elements_listeners() {
   $("body").click(function () {
     $("button:contains('Edit MC and Title'):not([ysl])").attr('ysl', 'ysl').click(showDropdownList);
+    $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU);
   });
 }
 
@@ -20,11 +21,6 @@ function updateCardGrade() {
 }
 
 function add_ModuleCards_listener() {
-  // $("body").click(function () {
-  //   $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU)
-  //     .each(updateCardGrade)
-  //     .each(changeColor);
-  // });
   checkExist("h3:contains('Semester ')", function () {
     $(this).siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU)
       .each(updateCardGrade)
@@ -199,7 +195,7 @@ function SULeft() {
     return total_SU;
   }
   const modules = JSON.parse(JSON.parse(localStorage.getItem('persist:moduleBank'))['modules']);
-  const su_left = total_SU - Object.keys(ysl_data).reduce((acc, cur) => acc + ysl_data[cur]['su'] ? modules[cur]['moduleCredit'] : 0, 0);
+  const su_left = total_SU - Object.keys(ysl_data).reduce((acc, cur) => acc + (ysl_data[cur]['su'] ? parseInt(modules[cur]['moduleCredit']) : 0), 0);
   localStorage.setItem('YSL:SUleft', su_left);
   return su_left;
 }
