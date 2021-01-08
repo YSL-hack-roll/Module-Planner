@@ -26,6 +26,30 @@ function add_Click_listener() {
 
 function toggleSU() {
   console.log($(this).find("strong").text());
+  const mod_code = $(this).find("strong").text();
+  if (canSU(mod_code)){
+    // change colour
+    updateSU(mod_code);
+  }
+}
+
+
+function updateSU(mod_code){
+  const mod_grade = getGrade(mod_code);
+  // if alr sued, make it not su, update su_left
+  // else if not sued and have enough su, su it and update su_left
+  // else do nothing
+  if (mod_grade['su']) {
+    setGrade(mod_code, mod_grade['grade'], false);
+    SULeft();
+    console.log(mod_code+ " was un-SUed");
+  } else if (SULeft() >= getMC(mod_code)) {
+    setGrade(mod_code, mod_grade['grade'], true);
+    SULeft();
+    console.log(mod_code+ " was SUed");
+  } else {
+    console.log(mod_code+" not enough su");
+  }
 }
 
 
