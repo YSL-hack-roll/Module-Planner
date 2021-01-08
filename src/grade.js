@@ -141,6 +141,9 @@ function updateEditModal() {
 
 function addSUSelector(mod, grade) {
   if (!['CS', 'CU'].includes(grade) && canSU(mod)) {
+    if ($("#su-selector-div").length) {
+      return;
+    }
     const su_selector = $("<div></div>").attr({
       class: "col-md-2",
       id: "su-selector-div"
@@ -175,7 +178,7 @@ function checkEditModal() {
 
 function showDropdownList() {
   setTimeout(function () {
-    console.log('new modal!!!');
+    // console.log('new modal!!!');
     updateEditModal();
   }, 500);
 }
