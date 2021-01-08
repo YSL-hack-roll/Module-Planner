@@ -1,6 +1,7 @@
 $(document).ready(function () {
   add_editModules_listener();
   add_ModuleCards_listener();
+  add_Click_listener();
 });
 
 function add_editModules_listener() {
@@ -22,13 +23,50 @@ function updateCardGrade() {
 function add_ModuleCards_listener() {
   $("body").click(function () {
     $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU)
-      .each(updateCardGrade);
+      .each(updateCardGrade)
+      .each(changeColor);
+  });
+}
+
+function add_Click_listener() {
+  $("body").click(function () {
+    $("h3:contains('Semester ')").siblings("div").children("div[draggable]").each(changeColor);
   });
 }
 
 function toggleSU() {
   console.log($(this).find("strong").text());
+  const mod_code = $(this).find("strong").text();
+  if (canSU(mod_code)){
+    // change colour
+    updateSU(mod_code);
+  }
 }
+
+
+function updateSU(mod_code){
+  const mod_grade = getGrade(mod_code);
+  // if alr sued, make it not su, update su_left
+  // else if not sued and have enough su, su it and update su_left
+  // else do nothing
+  if (mod_grade['su']) {
+    setGrade(mod_code, mod_grade['grade'], false);
+    SULeft();
+    console.log(mod_code+ " was un-SUed");
+  } else if (SULeft() >= getMC(mod_code)) {
+    setGrade(mod_code, mod_grade['grade'], true);
+    SULeft();
+    console.log(mod_code+ " was SUed");
+  } else {
+    console.log(mod_code+" not enough su");
+  }
+}
+
+
+function changeColor() {
+  getGrade($(this).find("strong").text())['su'] ? $(this).css("backgroundColor", 'red') : $(this).css("backgroundColor", "2BB34A");
+}
+
 
 /**
  * 
@@ -85,6 +123,7 @@ function setGrade(mod, grade, su) {
       return $(this).find("strong").text() === mod;
     })
     .each(updateCardGrade);
+  // $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').find(":contains:" + mod).each(changeColor, console.log("debug" + $(this).find("strong").text()));
 }
 
 /**

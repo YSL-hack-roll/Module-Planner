@@ -88,7 +88,7 @@ function update_YSL_data(modcodes_array) {
         // console.log("upadte ysl, mod code 2 :" + mods_taken_grade[mod_code]);
         new_mods_taken_grade[mod_code] = mods_taken_grade[mod_code];
     }
-    console.log("update_ysl_data"+ new_mods_taken_grade);
+    // console.log("update_ysl_data"+ new_mods_taken_grade);
     if (new_mods_taken_grade == {}) {
         console.log("Error in updating YSL data! have modules:" + modcodes_array + "but data not present in YSL data");
     } else {
@@ -159,13 +159,14 @@ function add_button() {
 
 function display_cap() {
     let capstring = cal_cap();
+    // console.log(capstring);
     var $cap_box = $(`<p class="cap_value" style="margin-right:8px" > CAP:  ${capstring} </p>`);
     $cap_box.prependTo($(".main-content > div > header > div"));
 }
 
 function refresh_cap() {
     let capstring = cal_cap();
-    console.log("refresh cap, new cap:" + capstring);
+    // console.log("refresh cap, new cap:" + capstring);
     $(".main-content > div > header > div > p.cap_value").replaceWith(`<p class="cap_value" style="margin-right:8px"> CAP:  ${capstring} </p>`);
 }
 
@@ -208,7 +209,7 @@ function calculate_cap(courses) {
         cap = total_grade_sum / total_mc;
     }
 
-    // console.log("cap:" + cap);
+    // console.log("cap:" + cap + " " + total_grade_sum + " " +total_mc);
     return cap.toFixed(2);
 }
 
@@ -240,7 +241,7 @@ function display_su() {
 function refresh_su() {
     // let sustring = cal_su();
     let sustring = get_su();
-    console.log("refresh SU, new SU:" + sustring);
+    // console.log("refresh SU, new SU:" + sustring);
     $("#su-float").text(`Remaining SUs:  ${sustring}`);
 }
 
