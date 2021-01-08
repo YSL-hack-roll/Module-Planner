@@ -24,6 +24,7 @@ function toggleSU() {
   }
 }
 
+
 function updateSU(mod_code){
   const mod_grade = getGrade(mod_code);
   // if alr sued, make it not su, update su_left
@@ -41,6 +42,13 @@ function updateSU(mod_code){
     console.log(mod_code+" not enough su");
   }
 }
+
+
+function changeColor(that) {
+  $(that).css("backgroundColor", 'red');
+}
+
+
 /**
  * 
  * @param {string} mod mod code
