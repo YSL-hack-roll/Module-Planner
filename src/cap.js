@@ -4,16 +4,24 @@ $(document).ready(function () {
     display_cap();
 });
 
+// added a slight delay to make sure data is updated
+$("*").click(function() {
+    setTimeout(function () {
+        refresh_cap();
+    }, 50)
+});
+
+
 function cal_cap() {
     var mods_taken_raw = JSON.parse(localStorage.getItem('persist:planner'));
     var all_mods_info_raw = JSON.parse(localStorage.getItem('persist:moduleBank'));
     var mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
     
     var modcodes_array = get_modcodes_array(mods_taken_raw);
-    // console.log(modcodes_array);
+    console.log(modcodes_array);
     
     var mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
-    // console.log(mods_taken_info_cap);
+    console.log(mods_taken_info_cap);
 
     var cap = calculate_cap(mods_taken_info_cap);
     return cap;
@@ -64,6 +72,7 @@ function get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade
 
 
 function add_button() {
+
     
     var $calculate = $('<button class="btn btn-svg btn-outline-primary" style="margin-left:8px" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Calculate</button>');
     var $space = $('<div class="divider"/>');
@@ -75,10 +84,21 @@ function add_button() {
 
 function display_cap() {
     let capstring = cal_cap();
-    var $cap_box = $(`<p class="VcguI5co"> CAP:  ${capstring} </p>`);
+    var $cap_box = $(`<p class="cap_value"> CAP:  ${capstring} </p>`);
     $cap_box.prependTo($(".main-content > div > header > div"));
 }
 
+function refresh_cap() {
+    let capstring = cal_cap();
+    console.log("refresh cap, new cap:" + capstring);
+    $(".main-content > div > header > div > p.cap_value").replaceWith(`<p class="cap_value"> CAP:  ${capstring} </p>`);
+}
+
+// function refresh_cap() {
+//     let capstring = cal_cap();
+//     var $cap_box = $(`<p class="VcguI5co"> CAP:  ${capstring} </p>`);
+//     $cap_box.prependTo($(".main-content > div > header > div"));
+// }
 
 // calculate the cap of the semester
 function calculate_cap(courses) {
