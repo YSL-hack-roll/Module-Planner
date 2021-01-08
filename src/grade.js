@@ -1,11 +1,12 @@
 $(document).ready(function () {
-  add_editModules_listener();
+  add_dynamic_elements_listeners();
   add_ModuleCards_listener();
 });
 
-function add_editModules_listener() {
+function add_dynamic_elements_listeners() {
   $("body").click(function () {
     $("button:contains('Edit MC and Title'):not([ysl])").attr('ysl', 'ysl').click(showDropdownList);
+    $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU);
   });
 }
 
@@ -20,11 +21,6 @@ function updateCardGrade() {
 }
 
 function add_ModuleCards_listener() {
-  // $("body").click(function () {
-  //   $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU)
-  //     .each(updateCardGrade)
-  //     .each(changeColor);
-  // });
   checkExist("h3:contains('Semester ')", function () {
     $(this).siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').dblclick(toggleSU)
       .each(updateCardGrade)
