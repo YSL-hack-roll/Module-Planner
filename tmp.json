@@ -16,7 +16,7 @@ var text = `{
     "su": false,
     "mc": 4
   },
-  "CS2020": {
+  "CS2103": {
     "grade": "A+",
     "su": false,
     "mc": 4
