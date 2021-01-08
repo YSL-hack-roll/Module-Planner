@@ -14,12 +14,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Write PEM to file
-        run: 'echo "$PEM" > ext.pem'
+        run: 'echo "$PEM" > key.pem'
         shell: bash
         env:
           PEM: ${{secrets.PEM}}
+      - name: Set up npm crx
+        run: |
+          sudo npm install crx -g
       - name: Package extension
-        run: 'chrome --pack-extension=./ --pack-extension-key=ext.pem'
+        run: |
+          crx pack ./ -o Module-Planner.crx
+          ls
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

@@ -145,7 +145,7 @@ function addSUSelector(mod, grade) {
     });
     su_selector.html(
       '<label for="input-su" style="width: 100%; text-align: center;">SU?</label>' +
-      `<input id="su-selector-input" type="checkbox" class="form-control" value="1"${getGrade(mod)['su'] ?" checked" : ""}>`
+      `<input id="su-selector-input" type="checkbox" class="form-control" value="1"${getGrade(mod)['su'] ?" checked" : ""}${localStorage.getItem('YSL:cannotSU') && !getGrade(mod)['su'] ? ' disabled' : '' }>`
     );
     $(".ReactModalPortal > div > div > form > .form-row > .col-md-6").attr("class", "col-md-4");
     $(".ReactModalPortal > div > div > form > .form-row").append(su_selector);
