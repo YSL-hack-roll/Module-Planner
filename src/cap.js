@@ -4,20 +4,43 @@ $(document).ready(function () {
     display_cap();
 });
 
+
+$(window).bind('hashchange', function() {
+    add_button();
+    display_cap();
+}); // listen for hashchange using jQuery
+
+// window.onhashchange = function() { 
+//     //code  
+//     add_button();
+//     display_cap();
+// }
+// added a slight delay to make sure data is updated
+$("*").click(function() {
+    setTimeout(function () {
+        refresh_cap();
+    }, 50)
+});
+
+
 function cal_cap() {
     var mods_taken_raw = JSON.parse(localStorage.getItem('persist:planner'));
     var all_mods_info_raw = JSON.parse(localStorage.getItem('persist:moduleBank'));
-    var mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
-    
-    var modcodes_array = get_modcodes_array(mods_taken_raw);
-    // console.log(modcodes_array);
-    
-    var mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
-    // console.log(mods_taken_info_cap);
+     
+    try {
+        var mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
+        var modcodes_array = get_modcodes_array(mods_taken_raw);
+        // console.log(modcodes_array);
+        
+        var mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
+        // console.log(mods_taken_info_cap);
 
-    var cap = calculate_cap(mods_taken_info_cap);
-    return cap;
-
+        var cap = calculate_cap(mods_taken_info_cap);
+        return cap;
+    } catch(err) {
+        console.log('no grades have been entered yet');
+        return "0.00";
+    }
 }
 
 
@@ -64,8 +87,11 @@ function get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade
 
 
 function add_button() {
+
     
-    var $calculate = $('<button class="btn btn-svg btn-outline-primary" style="margin-left:8px" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Calculate</button>');
+    var $calculate = $('<button class="btn btn-svg btn-outline-primary" style="margin-left:8px" type="button"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-calculator" viewBox="0 0 18 16"><path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/><path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z"/></svg>  Calculate</button>');
+                //        <button class="btn btn-svg btn-outline-primary" type="button">      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Settings</button>
+    
     var $space = $('<div class="divider"/>');
     $space.appendTo($(".main-content > div > header > div"));
     $calculate.appendTo($(".main-content > div > header > div"));
@@ -75,10 +101,21 @@ function add_button() {
 
 function display_cap() {
     let capstring = cal_cap();
-    var $cap_box = $(`<p class="VcguI5co"> CAP:  ${capstring} </p>`);
+    var $cap_box = $(`<p class="VcguI5co" style="margin-right:8px" > CAP:  ${capstring} </p>`);
     $cap_box.prependTo($(".main-content > div > header > div"));
 }
 
+function refresh_cap() {
+    let capstring = cal_cap();
+    console.log("refresh cap, new cap:" + capstring);
+    $(".main-content > div > header > div > p.cap_value").replaceWith(`<p class="cap_value"> CAP:  ${capstring} </p>`);
+}
+
+// function refresh_cap() {
+//     let capstring = cal_cap();
+//     var $cap_box = $(`<p class="VcguI5co"> CAP:  ${capstring} </p>`);
+//     $cap_box.prependTo($(".main-content > div > header > div"));
+// }
 
 // calculate the cap of the semester
 function calculate_cap(courses) {

@@ -5,7 +5,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://nusmods.com/planner*"
+        "https://nusmods.com/*"
       ],
       "js": [
         "lib/jquery.min.js",
