@@ -1,7 +1,10 @@
 $(document).ready(function () {
   add_editModules_listener();
   add_ModuleCards_listener();
+  // add_Remove_listener();
+
   add_Click_listener();
+
 });
 
 function add_editModules_listener() {
@@ -39,6 +42,19 @@ function add_Click_listener() {
   });
 }
 
+function add_Remove_listener() {
+  $("body").click(function () {
+    $("button:contains('Remove')").click(
+      checkSU_when_remove
+    );
+    // console.log("removed one mod, su rebalanced");
+  });
+}
+function checkSU_when_remove() {
+  setTimeout(function() {
+    SULeft();
+  }, 50);
+}
 function toggleSU() {
   console.log($(this).find("strong").text());
   const mod_code = $(this).find("strong").text();
@@ -196,6 +212,7 @@ function updateEditModal() {
 
 var total_SU = 32;
 
+// var count = 0;
 function SULeft() {
   const ysl_data = JSON.parse(localStorage.getItem('YSL:data'));
   if (!ysl_data) {
@@ -203,7 +220,15 @@ function SULeft() {
     return total_SU;
   }
   const modules = JSON.parse(JSON.parse(localStorage.getItem('persist:moduleBank'))['modules']);
-  const su_left = total_SU - Object.keys(ysl_data).reduce((acc, cur) => acc + ysl_data[cur]['su'] ? modules[cur]['moduleCredit'] : 0, 0);
+  // console.log("su_left: "+count);
+  // console.log(ysl_data);
+  // const su_left = total_SU - Object.keys(ysl_data).reduce((acc, cur) => acc + ysl_data[cur]['su'] ? modules[cur]['moduleCredit'] : 0, 0);
+  let su_left = total_SU;
+  for(let mod_code in ysl_data) {
+    if (ysl_data[mod_code]['su']) {
+       su_left -= modules[mod_code]['moduleCredit'];
+    }
+  }
   localStorage.setItem('YSL:SUleft', su_left);
   return su_left;
 }
@@ -241,7 +266,12 @@ function addSUSelector(mod, grade) {
 }
 
 function showDropdownList() {
+  // setTimeout(function () {
+  //   // console.log('new modal!!!');
+  //   updateEditModal();
+  // }, 0);
   setTimeout(function () {
     updateEditModal();
   }, 0);
+  
 }
