@@ -15,23 +15,67 @@ $("*").click(function() {
 function cal_cap() {
     var mods_taken_raw = JSON.parse(localStorage.getItem('persist:planner'));
     var all_mods_info_raw = JSON.parse(localStorage.getItem('persist:moduleBank'));
-     
+    var modcodes_array = get_modcodes_array(mods_taken_raw);
+    console.log(modcodes_array);
+
+    // setTimeout(function () {
+    //     update_YSL_data(modcodes_array);
+    // }, 50)
+    update_YSL_data(modcodes_array);
+
+    if (localStorage.getItem('YSL:data') === null) {
+        return "0.00";
+    }
+
     try {
-        var mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
-        var modcodes_array = get_modcodes_array(mods_taken_raw);
-        // console.log(modcodes_array);
-        
+        let mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
         var mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
-        // console.log(mods_taken_info_cap);
+        console.log(mods_taken_info_cap);
 
         var cap = calculate_cap(mods_taken_info_cap);
         return cap;
     } catch(err) {
-        console.log('no grades have been entered yet');
+        // this catch block may be reduandant
+        console.log(err);
+        if (err instanceof TypeError) {
+           console.log('possible reason: no grades have been entered yet');
+        }
         return "0.00";
     }
 }
 
+// this function removes modules info in YSL:data when they were removed on the planner
+function update_YSL_data(modcodes_array) {
+    let mod_data = localStorage.getItem('YSL:data');
+    if (mod_data === null ) {
+        console.log("ysl does not exist")
+        return null;
+    } else if (modcodes_array.length == 0) {
+        localStorage.removeItem('YSL:data');
+        return null;
+    } else if (mod_data == {}) {
+        console.log("ysl == {} , empty")
+        return null;
+    }
+
+    let mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
+    let new_mods_taken_grade = {};
+    
+    for(let i = 0; i<modcodes_array.length; i++) {
+        let mod_code = modcodes_array[i];
+        // console.log("upadte ysl, mod code:" + mod_code);
+        // console.log(mods_taken_grade);
+        // console.log("upadte ysl, mod code 3:" + mods_taken_grade);
+        // console.log("upadte ysl, mod code 2 :" + mods_taken_grade[mod_code]);
+        new_mods_taken_grade[mod_code] = mods_taken_grade[mod_code];
+    }
+    console.log("update_ysl_data"+ new_mods_taken_grade);
+    if (new_mods_taken_grade == {}) {
+        console.log("Error in updating YSL data! have modules:" + modcodes_array + "but data not present in YSL data");
+    } else {
+        localStorage.setItem('YSL:data', JSON.stringify(new_mods_taken_grade));
+    }
+}
 
 function get_modcodes_array(mods_taken_raw) {
     let res = [];
