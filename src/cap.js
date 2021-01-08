@@ -10,7 +10,10 @@ function cal_cap() {
     var mods_taken_grade = JSON.parse(localStorage.getItem('YSL:data'));
     
     var modcodes_array = get_modcodes_array(mods_taken_raw);
+    // console.log(modcodes_array);
+    
     var mods_taken_info_cap = get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade);
+    // console.log(mods_taken_info_cap);
 
     var cap = calculate_cap(mods_taken_info_cap);
     console.log(cap);
@@ -37,7 +40,7 @@ function get_mods_taken_info(modcodes_array, all_mods_info_raw, mods_taken_grade
         let mod_code = modcodes_array[i];
         let mc, grade, su;
         if (all_mods_info.hasOwnProperty(mod_code)) {
-            mc = all_mods_info[mod_code]['moduleCredit'];
+            mc = parseInt(all_mods_info[mod_code]['moduleCredit']);
         } else {
             console.log('Error: CAP calculator, no MC info for' + mod_code);
             mc = 0;
@@ -74,6 +77,7 @@ function calculate_cap(courses) {
     var total_grade_sum = 0;
 
     for (const course in courses) {
+        // console.log(course + " su:  " + courses[course]['su']);
       if (courses[course]['su'] === true || courses[course]['grade'] === "CS" || courses[course]['grade'] === "NA") {
           continue;
       } else {
@@ -81,6 +85,8 @@ function calculate_cap(courses) {
         var mc = courses[course]['mc'];
         total_mc += mc;
         total_grade_sum += point * mc;
+        // console.log("totalmc : " + total_mc);
+        // console.log("total grade : " + total_grade_sum);
       }
     }
 
@@ -91,6 +97,8 @@ function calculate_cap(courses) {
     } else {
         cap = total_grade_sum / total_mc;
     }
+
+    // console.log("cap:" + cap);
     return cap.toFixed(2);
 }
 
