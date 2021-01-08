@@ -4,21 +4,18 @@ $(document).ready(function () {
   //checkEditModal();
 });
 
-function ha() {
-  setTimeout(() => {
-    $(".input-group").each(function () {
-      // console.log(this);
-    });
-  }, 100);
-}
-
-function add_addModules_listener() {
-  $("button:contains('Add Modules'):not([ysl])").attr("ysl", "ysl").click(ha);
-}
+$("*").click(function() {
+  setTimeout(function () {
+    add_editModules_listener();
+  }, )
+});
+// function add_editModules_listener() {
+//   $("button:contains('Edit MC and Title'):not([ysl])").click(showDropdownList);
+// }
 function add_editModules_listener() {
-  $("button:contains('Edit MC and Title'):not([ysl])").attr("ysl", "ysl").click(showDropdownList);
+  console.log("caught");
+  $("button:contains('Edit MC and Title'):not([ysl])").attr('ysl','ysl').click(showDropdownList);
 }
-
 /**
  * 
  * @param {string} mod mod code
@@ -178,7 +175,7 @@ function showDropdownList() {
   setTimeout(function () {
     // console.log('new modal!!!');
     updateEditModal();
-  }, 1000);
+  }, 0);
 }
 
 // $('button[type=submit]').click(function () {
