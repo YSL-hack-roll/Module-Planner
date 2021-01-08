@@ -101,7 +101,7 @@ function add_button() {
 
 function display_cap() {
     let capstring = cal_cap();
-    var $cap_box = $(`<p class="VcguI5co" style="margin-right:8px" > CAP:  ${capstring} </p>`);
+    var $cap_box = $(`<p class="cap_value" style="margin-right:8px" > CAP:  ${capstring} </p>`);
     $cap_box.prependTo($(".main-content > div > header > div"));
 }
 
