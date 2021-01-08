@@ -1,7 +1,6 @@
 $(document).ready(function () {
   add_editModules_listener();
   add_ModuleCards_listener();
-  add_Click_listener();
 });
 
 function add_editModules_listener() {
@@ -33,18 +32,15 @@ function add_ModuleCards_listener() {
   });
 }
 
-function add_Click_listener() {
-  $("body").click(function () {
-    $("h3:contains('Semester ')").siblings("div").children("div[draggable]").each(changeColor);
-  });
-}
-
 function toggleSU() {
   console.log($(this).find("strong").text());
   const mod_code = $(this).find("strong").text();
   if (canSU(mod_code)) {
     // change colour
     updateSU(mod_code);
+    $(this).each(changeColor);
+  } else {
+    alert(mod_code + " has no S/U option!");
   }
 }
 
@@ -69,7 +65,7 @@ function updateSU(mod_code) {
 
 
 function changeColor() {
-  getGrade($(this).find("strong").text())['su'] ? $(this).css("backgroundColor", 'red') : $(this).css("backgroundColor", "2BB34A");
+  getGrade($(this).find("strong").text())['su'] ? $(this).css("background-color", 'Lavender') : $(this).css("background-color", "");
 }
 
 
