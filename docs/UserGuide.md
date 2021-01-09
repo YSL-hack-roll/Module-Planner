@@ -1,6 +1,8 @@
 CAP/SU is a **Google Chrome browser extension for managing SUs, CAP alongside with NUSMOD Module Planner**
 Targeted at NUS students, CAP/SU can help you plan you college study plans conveniently and keep your academic record.
 
+#### You are welcomed to watch our brief [video demo](https://www.youtube.com/watch?v=AGxk2605byM&feature=emb_logo) :)
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Quick start
