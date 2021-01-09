@@ -20,6 +20,9 @@ function displayGrade(grade, su) {
   if (['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C'].includes(grade)) {
     return '(S)';
   }
+  if (grade === '') {
+    return '(S/U)'
+  }
   return '(U)';
 }
 
