@@ -14,6 +14,7 @@ $(window).bind('hashchange', function() {
 // }
 // added a slight delay to make sure data is updated
 $("*").click(function() {
+    SULeft();
     setTimeout(function () {
         refresh_cap();
         refresh_su();
