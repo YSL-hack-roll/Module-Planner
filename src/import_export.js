@@ -30,6 +30,40 @@ function exportData() {
   });
 }
 
+function populateModuleBank(mod) {
+  let moduleBank = localStorage.getItem('persist:moduleBank');
+  if (moduleBank) {
+    moduleBank = JSON.parse(moduleBank);
+  } else {
+    moduleBank = {};
+  }
+  let modules = moduleBank['modules'];
+  if (modules) {
+    modules = JSON.parse(modules);
+  } else {
+    modules = {};
+  }
+  if (modules[mod]) {
+    return;
+  }
+  const yr = new Date().getFullYear()
+  const mth = new Date().getMonth();
+  let ay;
+  if (mth < 6) {
+    ay = '' + (yr - 1) + '-' + yr;
+  } else {
+    ay = '' + yr + '-' + (yr + 1);
+  }
+  fetch(`https://api.nusmods.com/v2/${ay}/modules/${mod}.json`)
+    .then(res => res.json())
+    .then(data => {
+      modules[mod] = data;
+      moduleBank['modules'] = JSON.stringify(modules);
+      moduleBank = JSON.stringify(moduleBank);
+      localStorage.setItem('persist:moduleBank', moduleBank);
+    });
+}
+
 function importData() {
   const url_string = (window.location.href);
   const url = new URL(url_string);
@@ -37,6 +71,11 @@ function importData() {
   const ysl = decodeURIComponent(url.searchParams.get("ysl"));
   localStorage.setItem('persist:planner', planner);
   localStorage.setItem('YSL:data', ysl);
+  const planner_obj = JSON.parse(planner);
+  const modules = Object.values(JSON.parse(planner_obj['modules'])).map(x => x['moduleCode']);
+  modules.forEach(x => {
+    populateModuleBank(x);
+  });
   window.location.href = '/planner';
 }
 
