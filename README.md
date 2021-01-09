@@ -1,7 +1,12 @@
 # CAP/SU
 
+
 CAP/SU is a **browser extension for managing SUs, CAP alongside with NUSMOD Module Planner**
 Targeted at NUS students, CAP/SU can help you plan you college study plans conveniently and keep your academic record.
+
+
+#### Welcome to our website: [CAP/SU Website](https://ysl-hack-roll.github.io/Module-Planner/UserGuide.html)
+
 
 --------------------------------------------------------------------------------------------------------------------
 
