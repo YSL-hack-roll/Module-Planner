@@ -137,7 +137,9 @@ function setGrade(mod, grade, su) {
     .filter(function () {
       return $(this).find("strong").text() === mod;
     })
-    .each(updateCardGrade);
+    .each(updateCardGrade)
+    .each(changeColor);
+  SULeft();
   // $("h3:contains('Semester ')").siblings("div").children("div[draggable]:not([ysl])").attr('ysl', 'ysl').find(":contains:" + mod).each(changeColor, console.log("debug" + $(this).find("strong").text()));
 }
 
