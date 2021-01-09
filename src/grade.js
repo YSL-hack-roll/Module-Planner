@@ -10,13 +10,26 @@ function add_dynamic_elements_listeners() {
   });
 }
 
+function displayGrade(grade, su) {
+  if (!su) {
+    if (grade) {
+      return '(' + grade + ')';
+    }
+    return '';
+  }
+  if (['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C'].includes(grade)) {
+    return '(S)';
+  }
+  return '(U)';
+}
+
 function updateCardGrade() {
   const MC_div = $(this).find("div > div > div:contains('MCs')").first();
-  const grade = getGrade($(this).find("strong").text())['grade'];
+  const grade = getGrade($(this).find("strong").text());
   if ($(MC_div).siblings("div.grade-div").length) {
-    $(MC_div).siblings("div.grade-div").text(`${grade ? '(' + grade + ')' : ''}`);
+    $(MC_div).siblings("div.grade-div").text(displayGrade(grade['grade'], grade['su']));
   } else {
-    $(MC_div).after($(`<div class="grade-div">${grade ? '(' + grade + ')' : ''}</div>`));
+    $(MC_div).after($(`<div class="grade-div">${displayGrade(grade['grade'], grade['su'])}</div>`));
   }
 }
 
