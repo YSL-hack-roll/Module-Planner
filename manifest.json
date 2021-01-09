@@ -25,7 +25,8 @@
         "src/check_exist.js",
         "src/main.js",
         "src/grade.js",
-        "src/cap.js"
+        "src/cap.js",
+        "src/import_export.js"
       ]
     }
   ]
