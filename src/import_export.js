@@ -13,7 +13,7 @@ $(document).ready(function () {
 });
 
 function exportData() {
-  const export_url = `https://nusmods.com/planner?planner=${localStorage.getItem('persist:planner')}&ysl=${localStorage.getItem('YSL:data')}`
+  const export_url = (`https://nusmods.com/planner?planner=${encodeURIComponent(localStorage.getItem('persist:planner'))}&ysl=${encodeURIComponent(localStorage.getItem('YSL:data'))}`);
   // setTimeout(() => {
   //   navigator.clipboard.writeText(export_url).then(function () {
   //     console.log('succeeded');
@@ -31,10 +31,10 @@ function exportData() {
 }
 
 function importData() {
-  const url_string = window.location.href;
+  const url_string = (window.location.href);
   const url = new URL(url_string);
-  const planner = url.searchParams.get("planner");
-  const ysl = url.searchParams.get("ysl");
+  const planner = decodeURIComponent(url.searchParams.get("planner"));
+  const ysl = decodeURIComponent(url.searchParams.get("ysl"));
   localStorage.setItem('persist:planner', planner);
   localStorage.setItem('YSL:data', ysl);
   window.location.href = '/planner';
