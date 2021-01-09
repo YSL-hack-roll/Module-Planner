@@ -79,7 +79,7 @@ function updateSU(mod_code) {
 
 
 function changeColor() {
-  getGrade($(this).find("strong").text())['su'] ? $(this).css("background-color", 'Lavender') : $(this).css("background-color", "");
+  getGrade($(this).find("strong").text())['su'] ? $(this).css("background-color", 'DodgerBlue') : $(this).css("background-color", "");
 }
 
 
