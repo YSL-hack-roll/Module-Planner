@@ -17,7 +17,7 @@ Targeted at NUS students, CAP/SU can help you plan you college study plans conve
 3. Deploy it to your chrome browser.
 
 4. Open [NUSMOD](https://nusmods.com/), access Settings > NUSMods Beta > Turn it ON, then access [NUSMOD-Planner](https://nusmods.com/planner).
-   ![Ui](images/Ui.png)
+   ![Ui](docs/images/Ui.png)
 
 5. Click `Add Modules` to add new modules to the planner.
 
@@ -38,7 +38,7 @@ Targeted at NUS students, CAP/SU can help you plan you college study plans conve
 Records student's respective grades of the modules that they have taken.
 
 
-![grade seletion](images/selectGrade.png)
+![grade seletion](docs/images/selectGrade.png)
 
 Usage: 
 
