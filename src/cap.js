@@ -87,6 +87,8 @@ function update_YSL_data(modcodes_array) {
     } else {
         localStorage.setItem('YSL:data', JSON.stringify(new_mods_taken_grade));
     }
+    SULeft();
+    console.log("updated");
 }
 
 function get_modcodes_array(mods_taken_raw) {
